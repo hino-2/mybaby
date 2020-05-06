@@ -2,7 +2,12 @@
     display: grid;
     width: 100%;
     height: 100%;
-    grid-auto-rows: 30px;
+    grid-auto-rows: minmax(40px, max-content);
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
 
     div {
         padding: 5px;
@@ -12,6 +17,7 @@
     }
 
     .title {
+        place-self: center;
         letter-spacing: 0.02857em;
 
         @media only screen and (max-width: 760px) {
@@ -19,22 +25,105 @@
     }
 
     .logo {
-        justify-self: center;
-        align-self: center;
+        place-self: center;
     }
 
     .greetings {
-        justify-self: start;
-        align-self: center;
-        color: white;
+        place-self: center;
         letter-spacing: 0.02857em;
+        color: #0000f0;
+
+        a:visited {
+            text-decoration: none;
+        }
     }
 
     .account {
         width: 100%;
-        display: grid;
+        // display: grid;
         justify-self: start;
         align-self: center;
     }
+
+    .baby-li {
+        margin-top: 2px;
+        border: 1px solid black;
+        border-radius: 3px;
+        width: 88%;
+        cursor: pointer;
+    }
+
+    .functions {
+        margin-top: 20px;
+
+        .functions-li {
+            display: block;
+            text-align: center;
+            color: black;
+            border: 1px solid black;
+            border-radius: 3px;
+            width: 94%;
+            cursor: pointer;
+        }
+    }
 }
 
+
+
+select {
+    width: 100%;
+    height: 50px;
+    font-size: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0;
+    background-color: #c0392b;
+    border: none;
+    border-bottom: 2px solid #962d22;
+    color: white;
+    appearance: none;
+    padding: 10px;
+    padding-right: 38px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: color 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease;
+
+    /* For IE <= 11 */
+    &::-ms-expand {
+        display: none; 
+    }
+
+}
+
+.select-icon {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 30px;
+    height: 36px;
+    pointer-events: none;
+    border: 2px solid #962d22;
+    padding-left: 5px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    svg.icon {
+        transition: fill 0.3s ease;
+        fill: white;
+    }
+}
+  
+  select:hover,
+  select:focus {
+    color: #c0392b;
+    background-color: white;
+    border-bottom-color: #DCDCDC;
+  }
+  select:hover ~ .select-icon,
+  select:focus ~ .select-icon {
+    background-color: white;
+    border-color: #DCDCDC;
+  }
+  select:hover ~ .select-icon svg.icon,
+  select:focus ~ .select-icon svg.icon {
+    fill: #c0392b;
+  }

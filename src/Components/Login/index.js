@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react'
-import { Link, useHistory }  from 'react-router-dom'
-import { useDispatch }       from 'react-redux'
-import Cookies               from 'universal-cookie'
-import Button                from '@material-ui/core/Button'
-import { makeStyles }        from '@material-ui/core/styles'
+import React, { useState }  from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { useDispatch }      from 'react-redux'
+import Cookies              from 'universal-cookie'
+import Button               from '@material-ui/core/Button'
+import { makeStyles }       from '@material-ui/core/styles'
 import { userLogin }        from '../../actions'
 import './style.scss'
 
@@ -79,7 +79,7 @@ const Login = () => {
                 ]
             }
             const cookie = new Cookies()
-            cookie.set('user', user, {path: "/", maxAge: 3600})
+            cookie.set('mybaby-user', user, {path: "/", maxAge: 3600})
             dispatch(userLogin(user))
             // context.setUser(user)
             history.push("/")
