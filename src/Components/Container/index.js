@@ -3,6 +3,7 @@ import { Switch, Route, withRouter }      from "react-router-dom"
 import { TransitionGroup, CSSTransition } from "react-transition-group"
 import HomePage from '../HomePage'
 import Baby     from '../Baby'
+import Register from '../Register'
 import Login    from '../Login'
 import Logout   from '../Logout'
 import './style.scss'
@@ -18,6 +19,7 @@ const Container = ({ location }) => (
                     <Switch location={location}>
                         <Route path="/" exact       component={HomePage} />
                         <Route path="/babies/:name" component={Baby} />
+                        <Route path="/register"     component={Register} />
                         <Route path="/login"        component={Login} />
                         <Route path="/logout"       component={Logout} />
                     </Switch>

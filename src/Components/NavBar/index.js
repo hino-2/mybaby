@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     root: {
         background: '#ff3a69',  
         borderRadius: 3,
-        border: '1px solid white',
+        border: '2px solid white',
         color: 'white',
         height: 40,
         lineHeight: 'normal',
@@ -31,14 +31,14 @@ const useStyles = makeStyles({
 
 const NavBar = () => {
     const [babyList, setBabyList] = useState([])
-    const [userName, setUserName] = useState('Я Родитель')
+    const [userName, setUserName] = useState('')
     const user = useSelector(state => state.user)
 
     const classes = useStyles()
 
     useEffect(() => {
         if(user) {
-            setUserName(user.gender === 'm' ? 'я Папа' : 'я Мама')
+            setUserName(user.gender === 'm' ? 'Я папа' : 'Я мама')
             setBabyList(user.babies.sort((a, b) => a.name.localeCompare(b.name)).map(item => 
                 <Link to={`/babies/${item.name}`} key={uniqid()}>
                     <div className="baby-li" style={{backgroundColor: item.gender === 'm' ? 'dodgerblue' : 'hotpink'}}>
@@ -56,17 +56,15 @@ const NavBar = () => {
             return;
         }
         
-        setUserName('Я Родитель')
+        setUserName('')
         setBabyList(<></>)
     }, [user])
 
     return(
         <div className="navbar">
             <div className="title">
-                <Link to="/">
-                    <font color="white" style={{fontSize: "18px"}}>
-                        MyBaby.ru
-                    </font>
+                <Link to="/" style={{color: "#ff003d", fontSize: "26px"}}>
+                    MyBaby.ru
                 </Link>
             </div>
             <div className="account">
@@ -81,7 +79,7 @@ const NavBar = () => {
             </div>
             <div className="greetings">
                 { user ?
-                    <Link to='/LK' style={{color: "#0000f0"}}>
+                    <Link to='/LK' style={{color: user.gender === "m" ? "cornflowerblue" : "lightcoral"}}>
                         <div style={{display: "inline-block", padding: "2px"}}>
                             <img src="/img/user-solid.svg" alt="Личный кабинет" width="20px" height="20px"/>
                         </div>

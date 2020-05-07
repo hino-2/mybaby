@@ -9,9 +9,9 @@ import './style.scss'
 
 const useStyles = makeStyles({
     root: {
-        background: '#df641a', 
+        background: '#ff3a69', 
         borderRadius: 3,
-        border: 0,
+        border: '2px solid white',
         color: 'white',
         height: 62,
         width: 300,
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
         padding: '0 20px',
         minWidth: '100px',
         "&:hover": {
-            backgroundColor: "#cc9a00",
+            backgroundColor: "#ff003d",
         }
     },
     label: {
@@ -40,56 +40,39 @@ const Login = () => {
 
         if(!email || !pass) return
         
-        // const response = await fetch('/login', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Accept': 'application/json',
-        //       'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({"email": email, "password": pass})
-        // })
-        // if(response.status !== 200) {
-        //     setMessage(<>
-        //         <div className="message">
-        //             Не удалось авторизоваться<br />
-        //             Жаловаться сюда:&nbsp
-        //                 <a href='mailto:info-corona@mail.ru'>почта для жалований</a>
-        //         </div>                
-        //     </>)
-        //     return
-        // }
-        // const user = await response.json()
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"email": email, "password": pass})
+        })
+        if(response.status === 401) {
+            setMessage(
+                <div className="message">
+                    Неправильный e-mail или пароль
+                </div>
+            )
+            return
+        }
+        if(response.status !== 200) {
+            setMessage(<>
+                <div className="message">
+                    Не удалось авторизоваться<br />
+                    Жаловаться сюда:&nbsp;
+                        <a href='mailto:info-corona@mail.ru'>почта для жалований</a>
+                </div>                
+            </>)
+            return
+        }
+        const user = await response.json()
+        console.log(user)
 
-        // if(user.userID) {
-            const user = {
-                id: 1,
-                userName: 'Игорь Ушаков',
-                gender: 'm',
-                babies: [
-                    {
-                        id: 'b1',
-                        name: 'Даша',
-                        gender: 'f'
-                    },
-                    {
-                        id: 'b2',
-                        name: 'Ваня',
-                        gender: 'm'
-                    }
-                ]
-            }
-            const cookie = new Cookies()
-            cookie.set('mybaby-user', user, {path: "/", maxAge: 3600})
-            dispatch(userLogin(user))
-            // context.setUser(user)
-            history.push("/")
-        // } else {
-        //     setMessage(
-        //         <div className="message">
-        //             Неправильный e-mail или пароль
-        //         </div>
-        //     )
-        // }
+        const cookie = new Cookies()
+        cookie.set('mybaby-user', user, {path: "/", maxAge: 3600})
+        dispatch(userLogin(user))
+        history.push("/")
     }
 
     return (
