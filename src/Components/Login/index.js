@@ -1,36 +1,22 @@
-import React, { useState }  from 'react'
+import React, { useState,
+                useEffect } from 'react'
+import { useSelector }      from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { useDispatch }      from 'react-redux'
 import Cookies              from 'universal-cookie'
 import Button               from '@material-ui/core/Button'
 import { makeStyles }       from '@material-ui/core/styles'
 import { userLogin }        from '../../actions'
+import { bigButton }     from '../../utils/buttonStyles'
 import './style.scss'
 
-const useStyles = makeStyles({
-    root: {
-        background: '#ff3a69', 
-        borderRadius: 3,
-        border: '2px solid white',
-        color: 'white',
-        height: 62,
-        width: 300,
-        lineHeight: 'normal',
-        padding: '0 20px',
-        minWidth: '100px',
-        "&:hover": {
-            backgroundColor: "#ff003d",
-        }
-    },
-    label: {
-      textTransform: 'capitalize',
-    },
-})
+const useStyles = makeStyles(bigButton)
 
 const Login = () => {
     const dispatch = useDispatch()
     const history  = useHistory()
     const classes  = useStyles()
+    const user    = useSelector(state => state.user)
 
     const [message, setMessage] = useState('')
 
@@ -74,6 +60,12 @@ const Login = () => {
         dispatch(userLogin(user))
         history.push("/")
     }
+
+    useEffect(() => {
+        if(user) history.push('/')
+    }, [user])
+
+    if(user) return null
 
     return (
         <div className="login">

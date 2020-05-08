@@ -8,37 +8,21 @@ import { makeStyles }       from '@material-ui/core/styles'
 import { Image, 
          Transformation }   from 'cloudinary-react'
 import { isMobile }         from '../../utils'
+import { smallButton }     from '../../utils/buttonStyles'
 import './style.scss'
 
-const useStyles = makeStyles({
-    root: {
-        background: '#ff3a69',  
-        borderRadius: 3,
-        border: '2px solid white',
-        color: 'white',
-        height: 40,
-        lineHeight: 'normal',
-        padding: '0 20px',
-        width: 'calc(100% - 10px)',
-        "&:hover": {
-          backgroundColor: "#ff003d",
-        }
-    },
-    label: {
-      textTransform: 'capitalize',
-    },
-})
+const useStyles = makeStyles(smallButton)
 
 const NavBar = () => {
     const [babyList, setBabyList] = useState([])
-    const [userName, setUserName] = useState('')
+    const [userGender, setUserGender] = useState('')
     const user = useSelector(state => state.user)
 
     const classes = useStyles()
 
     useEffect(() => {
         if(user) {
-            setUserName(user.gender === 'm' ? 'Я папа' : 'Я мама')
+            setUserGender(user.gender === 'm' ? 'Папин кабинет' : 'Мамин кабинет')
             setBabyList(user.babies.sort((a, b) => a.name.localeCompare(b.name)).map(item => 
                 <Link to={`/babies/${item.name}`} key={uniqid()}>
                     <div className="baby-li" style={{backgroundColor: item.gender === 'm' ? 'dodgerblue' : 'hotpink'}}>
@@ -47,7 +31,7 @@ const NavBar = () => {
                                 <Transformation height="20" width="20" quality="auto:good" crop="fit" />
                             </Image>
                         </div>
-                        <div style={{display: "inline-block", verticalAlign: "top"}}>
+                        <div className="name">
                             {item.name}
                         </div>
                     </div>
@@ -56,7 +40,7 @@ const NavBar = () => {
             return;
         }
         
-        setUserName('')
+        setUserGender('')
         setBabyList(<></>)
     }, [user])
 
@@ -83,12 +67,12 @@ const NavBar = () => {
                         <div style={{display: "inline-block", padding: "2px"}}>
                             <img src="/img/user-solid.svg" alt="Личный кабинет" width="20px" height="20px"/>
                         </div>
-                        <div style={{display: "table-cell", verticalAlign: "middle", padding: "2px"}}>
-                            { userName }
+                        <div className="user-gender">
+                            { userGender }
                         </div>
                     </Link>
                     :
-                    userName
+                    userGender
                 }
             </div>
             <div id="babies" style={{width: '100%'}}>

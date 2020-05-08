@@ -13,9 +13,9 @@ const App = () => {
 	console.log(user)
 	const dispatch = useDispatch()
 
-	useEffect(() => {
+	// useEffect(() => {
 		if (user) dispatch(userLogin(user))
-	}, [user])
+	// }, [user])
 
 	return (
 		<BrowserRouter>

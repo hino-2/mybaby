@@ -6,6 +6,7 @@ import Baby     from '../Baby'
 import Register from '../Register'
 import Login    from '../Login'
 import Logout   from '../Logout'
+import LK       from '../LK'
 import './style.scss'
 
 const Container = ({ location }) => (
@@ -22,6 +23,7 @@ const Container = ({ location }) => (
                         <Route path="/register"     component={Register} />
                         <Route path="/login"        component={Login} />
                         <Route path="/logout"       component={Logout} />
+                        <Route path="/lk"           component={LK} />
                     </Switch>
                 </section>
             </CSSTransition>

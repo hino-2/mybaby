@@ -1,34 +1,20 @@
-import React, { useState } from 'react'
-import { useHistory }      from 'react-router-dom'
-import Button              from '@material-ui/core/Button'
-import { makeStyles }      from '@material-ui/core/styles'
+import React, { useState,
+                useEffect } from 'react'
+import { useHistory }       from 'react-router-dom'
+import { useSelector }      from 'react-redux'
+import Button               from '@material-ui/core/Button'
+import { makeStyles }       from '@material-ui/core/styles'
 import { Image, 
-    Transformation }       from 'cloudinary-react'
+         Transformation }   from 'cloudinary-react'
+import { bigButton }     from '../../utils/buttonStyles'         
 import './style.scss'
 
-const useStyles = makeStyles({
-    root: {
-        background: '#ff3a69', 
-        borderRadius: 3,
-        border: '2px solid white',
-        color: 'white',
-        height: 62,
-        width: 300,
-        lineHeight: 'normal',
-        padding: '0 20px',
-        minWidth: '100px',
-        "&:hover": {
-            backgroundColor: "#ff003d",
-        }
-    },
-    label: {
-      textTransform: 'capitalize',
-    },
-});
+const useStyles = makeStyles(bigButton)
 
 const Register = () => {
     const history = useHistory()
     const classes = useStyles()
+    const user    = useSelector(state => state.user)
 
     const [message, setMessage] = useState('')
     const [gender, setGender]   = useState('m')
@@ -40,7 +26,7 @@ const Register = () => {
         setMessage(
             <div className="message">
                 Ура! Вы зарегистрированы!<br />
-                Когда дочитаете эту фразу, появится страница входа
+                Когда вы дочитаете эту фразу, появится страница входа
             </div>
         )
         setTimeout(() => {
@@ -124,6 +110,12 @@ const Register = () => {
             text.style.border          = '2px solid lightcoral'
         }
     }
+
+    useEffect(() => {
+        if(user) history.push('/')
+    }, [user])
+    
+    if(user) return null
 
     return (
         <div className="register">

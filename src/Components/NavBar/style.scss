@@ -1,3 +1,5 @@
+$textShadow: -1px -1px 1px rgba(255, 255, 255, 0.1), 1px 1px 1px rgba(0, 0, 0, 0.5), 5px 5px 1px rgba(206, 89, 55, 0);
+
 .navbar {
     display: grid;
     width: 100%;
@@ -19,6 +21,7 @@
     .title {
         place-self: center;
         letter-spacing: 0.02857em;
+        text-shadow: $textShadow;
 
         @media only screen and (max-width: 760px) {
         }
@@ -36,6 +39,13 @@
         a:visited {
             text-decoration: none;
         }
+
+        .user-gender {
+            display: table-cell;
+            vertical-align: middle; 
+            padding: 2px;
+            // text-shadow: $textShadow;
+        }
     }
 
     .account {
@@ -50,7 +60,17 @@
         border: 1px solid black;
         border-radius: 3px;
         width: 88%;
+        text-shadow: $textShadow;
         cursor: pointer;
+
+        img {
+            vertical-align: middle;
+        }
+
+        .name {
+            display: inline-block;
+            vertical-align: bottom;
+        }
     }
 
     .functions {
