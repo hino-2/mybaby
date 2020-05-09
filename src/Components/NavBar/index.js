@@ -2,19 +2,16 @@ import React, { useState,
                 useEffect } from 'react'
 import { Link }             from 'react-router-dom'
 import { useSelector }      from 'react-redux'
-import uniqid               from 'uniqid'
 import Button               from '@material-ui/core/Button'
 import { makeStyles }       from '@material-ui/core/styles'
-import { Image, 
-         Transformation }   from 'cloudinary-react'
 import { isMobile }         from '../../utils'
-import { smallButton }     from '../../utils/buttonStyles'
+import { smallButton }      from '../../utils/buttonStyles'
+import BabiesList           from '../BabiesList'
 import './style.scss'
 
 const useStyles = makeStyles(smallButton)
 
 const NavBar = () => {
-    const [babyList, setBabyList] = useState([])
     const [userGender, setUserGender] = useState('')
     const user = useSelector(state => state.user)
 
@@ -23,27 +20,12 @@ const NavBar = () => {
     useEffect(() => {
         if(user) {
             setUserGender(user.gender === 'm' ? 'Папин кабинет' : 'Мамин кабинет')
-            setBabyList(user.babies.sort((a, b) => a.name.localeCompare(b.name)).map(item => 
-                <Link to={`/babies/${item.name}`} key={uniqid()}>
-                    <div className="baby-li" style={{backgroundColor: item.gender === 'm' ? 'dodgerblue' : 'hotpink'}}>
-                        <div style={{display: "inline-block"}}>
-                            <Image cloudName="hino-2" publicId="v1/mybaby/duck.png">
-                                <Transformation height="20" width="20" quality="auto:good" crop="fit" />
-                            </Image>
-                        </div>
-                        <div className="name">
-                            {item.name}
-                        </div>
-                    </div>
-                </Link>
-            ))
-            return;
+            return
         }
         
         setUserGender('')
-        setBabyList(<></>)
     }, [user])
-
+    
     return(
         <div className="navbar">
             <div className="title">
@@ -75,9 +57,7 @@ const NavBar = () => {
                     userGender
                 }
             </div>
-            <div id="babies" style={{width: '100%'}}>
-                { babyList }
-            </div>
+            <BabiesList babies={user ? user.babies : []} isEditable={false} showAge={false} />
             <div className="functions">
                 <Link to='/weightcalc'>
                     <div className="functions-li">
