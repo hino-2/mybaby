@@ -93,7 +93,7 @@ const LK = () => {
             <div>
                 &nbsp;
             </div>
-            <BabyAdd />
+            <BabyAdd userId={user._id}/>
             <div>
                 &nbsp;
             </div>

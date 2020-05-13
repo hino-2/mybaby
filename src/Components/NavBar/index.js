@@ -57,7 +57,10 @@ const NavBar = () => {
                     userGender
                 }
             </div>
-            <BabiesList babies={user ? user.babies : []} isEditable={false} showAge={false} />
+            { user ? 
+                <BabiesList babies={user.babies} isEditable={false} showAge={false} />
+                : []
+            }
             <div className="functions">
                 <Link to='/weightcalc'>
                     <div className="functions-li">

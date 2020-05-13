@@ -13,9 +13,7 @@ const App = () => {
 	console.log(user)
 	const dispatch = useDispatch()
 
-	// useEffect(() => {
-		if (user) dispatch(userLogin(user))
-	// }, [user])
+	if (user) dispatch(userLogin(user))
 
 	return (
 		<BrowserRouter>
@@ -30,6 +28,11 @@ const App = () => {
 		</BrowserRouter>
 	)
 }
+
+// TODO:
+// развивашки
+// учить считать
+// гайд по записи в садик
 
 export default App
  

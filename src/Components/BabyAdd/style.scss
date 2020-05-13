@@ -21,5 +21,69 @@ $textShadow: -1px -1px 1px rgba(255, 255, 255, 0.1), 1px 1px 1px rgba(0, 0, 0, 0
     .name {
         display: inline-block;
         vertical-align: bottom;
+
+        input {
+            background: transparent;
+            border: 0;
+            outline: none;
+            border-bottom: 2px solid #fcae28;
+            color: white;
+            text-shadow: $textShadow;
+            font-size: 16px;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 600;
+            width: 75%;
+        }
+
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: #fcae28;
+            opacity: 1; /* Firefox */
+        }
+            
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #fcae28;
+        }
+            
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: #fcae28;
+        }
+    }
+
+    .date {
+        display: inline-block;
+        vertical-align: bottom;
+
+        input {
+            background: transparent;
+            border: 0;
+            outline: none;
+            border-bottom: 2px solid #fcae28;
+            color: white;
+            text-shadow: $textShadow;
+            font-size: 16px;
+            font-family: 'Raleway', sans-serif;
+            width: 80%;
+        }
+
+        ::-webkit-inner-spin-button,
+        ::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+        }
+
+
+
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: #fcae28;
+            opacity: 0.4; 
+        }
+            
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #fcae28;
+        }
+            
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: #fcae28;
+        }
     }
 }
