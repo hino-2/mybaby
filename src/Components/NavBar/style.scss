@@ -1,18 +1,15 @@
-$textShadow: -1px -1px 1px rgba(255, 255, 255, 0.1), 1px 1px 1px rgba(0, 0, 0, 0.5), 5px 5px 1px rgba(206, 89, 55, 0);
+@import '../../styles/text_styles';
 
 .navbar {
     display: grid;
     width: 100%;
     height: 100%;
     grid-auto-rows: minmax(40px, max-content);
+    padding: 0 2px 0 2px;
 
     a {
         text-decoration: none;
         color: white;
-    }
-
-    div {
-        padding: 5px;
     }
 
     @media only screen and (max-width: 760px) {
@@ -50,39 +47,21 @@ $textShadow: -1px -1px 1px rgba(255, 255, 255, 0.1), 1px 1px 1px rgba(0, 0, 0, 0
 
     .account {
         width: 100%;
-        // display: grid;
-        justify-self: start;
-        align-self: center;
+        display: block;
+        text-align: center;
     }
-
-    // .baby-li {
-    //     margin-top: 2px;
-    //     border: 1px solid black;
-    //     border-radius: 3px;
-    //     width: 88%;
-    //     text-shadow: $textShadow;
-    //     cursor: pointer;
-
-    //     img {
-    //         vertical-align: middle;
-    //     }
-
-    //     .name {
-    //         display: inline-block;
-    //         vertical-align: bottom;
-    //     }
-    // }
 
     .functions {
         margin-top: 20px;
 
         .functions-li {
-            display: block;
-            text-align: center;
+            display: grid;
+            place-content: center;
+            height: 30px;
             color: black;
             border: 1px solid black;
             border-radius: 3px;
-            width: 94%;
+            width: 100%;
             cursor: pointer;
         }
     }

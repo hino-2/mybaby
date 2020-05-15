@@ -62,7 +62,7 @@ const NavBar = () => {
                 : []
             }
             <div className="functions">
-                <Link to='/weightcalc'>
+                <Link to='/weigthCalc'>
                     <div className="functions-li">
                         Вес
                     </div>

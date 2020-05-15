@@ -51,11 +51,17 @@ const BabyAdd = ({ userId }) => {
     }
 
     const submitNewBaby = async () => {
+        const babyName   = document.querySelector('#baby-name').value
+        const babyGender = document.querySelector('#baby-gender').checked ? 'f' : 'm'
+        const babyDOB    = document.querySelector('#baby-dob').value
+    
+        if(!babyName || !babyDOB) return
+
         const newBaby = {
             id: uniqid(),
-            name: document.querySelector('#baby-name').value,
-            gender: document.querySelector('#baby-gender').checked ? 'f' : 'm',
-            dob: document.querySelector('#baby-dob').value
+            name: babyName,
+            gender: babyGender,
+            dob: babyDOB
         }
 
         const response = await fetch('/newBaby', {

@@ -1,17 +1,18 @@
-import React, { useEffect }             from 'react'
+import React             from 'react'
 import { useDispatch }   from 'react-redux'
 import NavBar            from '../NavBar'
 import Container         from '../Container'
 import Cookies           from 'universal-cookie'
 import { BrowserRouter } from 'react-router-dom'
 import { userLogin }     from '../../actions'
-import './App.scss';
+import './App.scss'
 
 const App = () => {
-	const cookie = new Cookies()
-	const user = cookie.get('mybaby-user')
-	console.log(user)
+	const cookie   = new Cookies()
+	const user     = cookie.get('mybaby-user')
 	const dispatch = useDispatch()
+	
+	console.log(user)
 
 	if (user) dispatch(userLogin(user))
 
@@ -28,11 +29,6 @@ const App = () => {
 		</BrowserRouter>
 	)
 }
-
-// TODO:
-// развивашки
-// учить считать
-// гайд по записи в садик
 
 export default App
  
