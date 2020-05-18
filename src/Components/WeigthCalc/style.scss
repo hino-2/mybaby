@@ -18,48 +18,32 @@
         text-align: center;
     }
 
-    .dob {
-        text-align: center;
-        margin-top: 10px;
+    // .dob {
+    //     text-align: center;
+    //     margin-top: 10px;
+    // }
+
+    .headers {
+        display: grid;
+        grid-template-columns: 6fr 6fr 6fr 1fr;
+        grid-auto-rows: minmax(48px, max-content);
+        justify-items: center;
+    
+        .label {
+            color: burlywood;
+            font-size: 24px;
+            text-shadow: $textShadow;
+        }
     }
 
-    .weigths {
-        display: block;
-        width: 100%;
-        margin-top: 15px;
+    .buttons {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-auto-rows: minmax(48px, max-content);
+        justify-items: center;
 
-        .row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            justify-items: center;
-            grid-auto-rows: minmax(35px, max-content);
-
-            .label {
-                color: burlywood;
-                font-size: 24px;
-                text-shadow: $textShadow;
-            }
-
-            input {
-                font-size: 24px;
-                border: 0;
-                border-bottom: 2px solid;
-                background: transparent;
-                width: 100%;
-                text-align: center;
-                outline: none;
-                // padding-left: 18px;
-            }
-    
-            ::-webkit-inner-spin-button,
-            ::-webkit-calendar-picker-indicator {
-                display: none;
-                -webkit-appearance: none;
-            }
-    
-            font {
-                font-size: 24px;
-            }
+        div {
+            width: 100%;
         }
     }
 }

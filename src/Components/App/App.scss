@@ -1,3 +1,5 @@
+@import '../../styles/text_styles';
+
 html {
 	overflow-x: hidden;
     overflow-y: scroll;
@@ -27,7 +29,8 @@ body {
 	text-align: center;
 	color: #ff3a68;
 	margin-top: 20px;
-	font-size: 28px;
+    font-size: 28px;
+    text-shadow: $textShadow;
 
 	a {
 		color: white;
