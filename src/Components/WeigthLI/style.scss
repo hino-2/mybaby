@@ -6,8 +6,16 @@
     grid-auto-rows: minmax(48px, max-content);
     justify-items: center;
 
-    .weigth-delete {
-        cursor: pointer;
+    .date {
+        align-self: center;
+    }
+
+    .weigth {
+        align-self: center;
+    }
+    
+    .normal {
+        align-self: center;
     }
 
     input {

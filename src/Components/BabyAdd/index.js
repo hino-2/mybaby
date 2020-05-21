@@ -61,7 +61,8 @@ const BabyAdd = ({ userId }) => {
             id: uniqid(),
             name: babyName,
             gender: babyGender,
-            dob: babyDOB
+            dob: babyDOB,
+            weigths: []
         }
 
         const response = await fetch('/newBaby', {

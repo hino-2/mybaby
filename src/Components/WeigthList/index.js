@@ -3,12 +3,12 @@ import WeigthLI from '../WeigthLI'
 import uniqid from 'uniqid'
 import './style.scss'
 
-const WeigthList = ({ weigths = [], isEditable = true }) => (
+const WeigthList = ({ babyId = '', weigths = [], isEditable = true, deleteWeigth }) => (
     <div className="weigths">
         {weigths
             .sort((a, b) => !a.date.localeCompare(b.date))
             .map(item => 
-                <WeigthLI weigth={item} isEditable={isEditable} key={uniqid()} />
+                <WeigthLI weigth={item} babyId={babyId} isEditable={isEditable} key={uniqid()} deleteWeigth={deleteWeigth} />
             )
         }
     </div>

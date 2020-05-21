@@ -12,7 +12,7 @@ const App = () => {
 	const user     = cookie.get('mybaby-user')
 	const dispatch = useDispatch()
 	
-	console.log(user)
+	// console.log(user)
 
 	if (user) dispatch(userLogin(user))
 

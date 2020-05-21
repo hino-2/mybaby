@@ -9,7 +9,6 @@ import BabiesList           from '../BabiesList'
 import WeigthList           from '../WeigthList'
 import { bigButton }        from '../../utils/buttonStyles'
 import uniqid               from 'uniqid'
-// import WeigthLI from '../WeigthLI'
 import './style.scss'
 
 const addWeigthEntryButtonStyle = {
@@ -29,6 +28,9 @@ const addWeigthEntryButtonStyle = {
         ...bigButton.label,
         textTransform: 'none',
     },
+    disabled: {
+        background: 'grey'
+    }
 }
 const calculateButtonStyle = {
     ...bigButton,
@@ -47,61 +49,131 @@ const calculateButtonStyle = {
         ...bigButton.label,
         textTransform: 'none',
     },
+    disabled: {
+        background: 'grey'
+    }
 }
 const useStylesAddButton  = makeStyles(addWeigthEntryButtonStyle)
 const useStylesCalcButton = makeStyles(calculateButtonStyle)
 
 const WeigthCalc = () => {
-    const user     = useSelector(state => state.user)
     const classesAddButton  = useStylesAddButton()
     const classesCalcButton = useStylesCalcButton()
+
+    const user   = useSelector(state => state.user)
     const babies = user ? user.babies : [
         {
             name: 'Мальчик',
             gender: 'm',
-            id: 'genericBoy'
+            id: 'genericBoy',
+            weigths: []
         },
         {
             name: 'Девочка',
             gender: 'f',
-            id: 'genericGirl'
+            id: 'genericGirl',
+            weigths: []
         },
-    ]
-    const [calcParams, setCalcParams] = useState({ id: '', weigths: [] })
+    ] 
+    const [selectedBabyId,      setSelectedBabyId]      = useState()
+    const [selectedBabyWeigths, setSelectedBabyWeigths] = useState(() => {
+        return selectedBabyId ? babies.find(baby => baby.id === selectedBabyId).weigths 
+                              : []
+    })
+    const addButtonProps = {
+        classes: {
+            root: classesAddButton.root,
+            label: classesAddButton.label,
+            disabled: classesAddButton.disabled
+        },
+        disabled: selectedBabyId ? false : true
+    }
+    const calcButtonProps = {
+        classes: {
+            root: classesCalcButton.root,
+            label: classesCalcButton.label,
+            disabled: classesCalcButton.disabled
+        },
+        disabled: selectedBabyWeigths.length > 1 ? false : true
+    }
 
     const addWeigthEntry = () => {
-        setCalcParams(prev => {
-            return {
-                ...prev,
-                weigths: [
-                    ...prev.weigths,
-                    {
-                        date: '',
-                        weigth: '',
-                        id: uniqid()
-                    }
-                ]
-            }
+        setSelectedBabyWeigths(prev => {
+            const _prev = prev ? prev : []
+            return [
+                ..._prev,
+                {
+                    date: '',
+                    weigth: '',
+                    id: uniqid()
+                }
+            ]
         })
     }
 
-    const loadParams = (e) => { 
-        const selectedBaby = babies.find(baby => baby.id === e.target.id)
-        setCalcParams({
-            id: selectedBaby.id,
-            weigths: selectedBaby.weigths || []
-        })
+    const deleteWeigth = (e) => {
+        e.preventDefault()
+        e.persist()
+        setSelectedBabyWeigths(prev => 
+            prev.filter(weigth => weigth.id !== e.target.id)
+        )
+
+        // let newBaby = user.babies.find(baby => baby.id === babyId)
+        // console.log(newBaby)
+        // newBaby = {
+        //     ...newBaby,
+        //     weigths: user.babies.find(baby => baby.id === babyId).weigths.filter(item => item.id !== weigth.id)
+        // }
+        // console.log(newBaby)
+
+        // const newUser = {
+        //     ...user,
+        //     babies: [
+        //         ...user.babies.filter(baby => baby.id !== babyId),
+        //         newBaby
+        //     ]
+        // }
+
+        // console.log(newUser)
         
+        // const response = await fetch('/deleteWeigth', {
+        //     method: 'DELETE',
+        //     headers: {
+        //       'Accept': 'application/json',
+        //       'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({userId: userId, babyId: babyId, weigth: weigth})
+        // })
+
+        // if(response.status !== 200) {
+        //     console.log(response.error)
+        //     return
+        // }
+
+        // const newUser = await response.json()
+        // console.log(newUser)
+
+        // setUserCookie('mybaby-user', newUser) 
+        // dispatch(userLogin(newUser))
+    }
+
+    const repaintBordersOnBabiesLI = () => {
         document.querySelectorAll('.weigth-calc .babies .baby-li').forEach(item => item.style.border = '')
-        document.querySelector(`.weigth-calc .babies .baby-li#${selectedBaby.id}`).style.border = '3px solid green'
+        if (document.querySelector(`.weigth-calc .babies .baby-li#${selectedBabyId}`)) 
+            document.querySelector(`.weigth-calc .babies .baby-li#${selectedBabyId}`).style.border = '3px solid green'
+    }
 
-
-        console.log(selectedBaby)
+    const loadParams = (e) => { 
+        const babyLIId = e.target.closest('.baby-li').id
+        setSelectedBabyId(babyLIId)
+        setSelectedBabyWeigths(
+            babies.find(baby => baby.id === babyLIId).weigths
+        )
     }
 
     const calculateAndSave = () => {
         let result = [
-            ...calcParams.weigths,
+            ...selectedBabyWeigths,
             {
                 date: '2020-01-01',
                 weigth: 4000
@@ -124,12 +196,7 @@ const WeigthCalc = () => {
     }
 
     useEffect(() => {
-        let selectedBabyLI
-        if (calcParams.id) {
-            selectedBabyLI = document.querySelector(`.weigth-calc .babies .baby-li#${calcParams.id}`)
-        if (selectedBabyLI)
-            selectedBabyLI.style.border = '3px solid green'
-        }
+        repaintBordersOnBabiesLI()
     })
 
     return (
@@ -137,7 +204,7 @@ const WeigthCalc = () => {
             <div className="desc">
                 <h2>Калькулятор веса</h2>
                 <p>
-                    Я калькулятор веса ваших утят. Я помогу вам рассчитать прибавки в весе и покажу сколько весит обычный утенок в этом возрасте.
+                    Я калькулятор веса ваших утят. Я помогу вам рассчитать прибавки в весе и покажу сколько обычно весит утенок в этом возрасте.
                 </p>
                 <h3>Как я работаю:</h3>
                 <p>
@@ -170,23 +237,21 @@ const WeigthCalc = () => {
                         &nbsp;
                     </div>
                 </div>
-                <WeigthList weigths={calcParams.weigths} />
+                <WeigthList weigths={selectedBabyWeigths} babyId={selectedBabyId} deleteWeigth={deleteWeigth} />
             </div>
             <div className="buttons">
                 <div>
-                    <Button classes={{
-                            root: classesAddButton.root,
-                            label: classesAddButton.label,
-                        }} onClick={addWeigthEntry}>
-                            Добавить дату и вес
+                    <Button {...addButtonProps}
+                        onClick={addWeigthEntry}
+                    >
+                        Добавить дату и вес
                     </Button>
                 </div>
                 <div>
-                    <Button classes={{
-                            root: classesCalcButton.root,
-                            label: classesCalcButton.label,
-                        }} onClick={calculateAndSave}>
-                            Рассчитать и сохранить
+                    <Button {...calcButtonProps}
+                        onClick={calculateAndSave}
+                    >
+                        Рассчитать и сохранить
                     </Button>
                 </div>
             </div>
