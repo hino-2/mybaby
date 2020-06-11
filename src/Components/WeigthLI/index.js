@@ -1,25 +1,33 @@
-import React        from 'react'
-import WeigthDelete from '../WeigthDelete'
-import './style.scss'
+import React, { useState } from "react";
+import WeigthDelete from "../WeigthDelete";
+import "./style.scss";
 
-const WeigthLI = ({ babyId, weigth, isEditable = true, deleteWeigth }) => (
-    <div className="weigth-li">
-            <div className="date">
-                <input type="date" defaultValue={weigth.date} />
-            </div>
-            <div className="weigth">
-                <input type="text" defaultValue={weigth.weigth} />
-            </div>
-            <div className="normal">
-                <font>
-                    &nbsp;
-                </font>
-            </div>
-            { isEditable ?
-                <WeigthDelete babyId={babyId} weigth={weigth} deleteWeigth={deleteWeigth} />
-                : []
-            }
-    </div>
-)
+const WeigthLI = ({ weigth, isEditable = true, deleteWeigth }) => {
+	const [date, setDate] = useState(weigth.date || "");
+	const [value, setValue] = useState(weigth.weigth || "");
 
-export default WeigthLI
+	const handleDateChange = (e) => {
+		setDate(e.target.value);
+	};
+
+	const handleValueChange = (e) => {
+		setValue(e.target.value);
+	};
+
+	return (
+		<div className="weigth-li">
+			<div className="date">
+				<input type="date" value={date} onChange={handleDateChange} />
+			</div>
+			<div className="weigth">
+				<input type="text" value={value} onChange={handleValueChange} />
+			</div>
+			<div className="normal">
+				<font>&nbsp;</font>
+			</div>
+			{isEditable ? <WeigthDelete weigth={weigth} deleteWeigth={deleteWeigth} /> : []}
+		</div>
+	);
+};
+
+export default WeigthLI;
