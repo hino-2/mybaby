@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import BabiesList from "../BabiesList";
-import WeigthList from "../WeigthList";
-import { bigButton } from "../../utils/buttonStyles";
 import uniqid from "uniqid";
+import BabiesList from "../BabiesList";
+import WeightList from "../WeightList";
+import { bigButton } from "../../utils/buttonStyles";
+import { sortByDate, enrichWeights, saveToDB } from "../../Logic/weight-calc";
 import "./style.scss";
 
-const addWeigthEntryButtonStyle = {
+const addweightEntryButtonStyle = {
 	...bigButton,
 	root: {
 		...bigButton.root,
@@ -50,31 +51,16 @@ const calculateButtonStyle = {
 		background: "grey",
 	},
 };
-const useStylesAddButton = makeStyles(addWeigthEntryButtonStyle);
+const useStylesAddButton = makeStyles(addweightEntryButtonStyle);
 const useStylesCalcButton = makeStyles(calculateButtonStyle);
 
-const WeigthCalc = () => {
+const WeightCalc = () => {
 	const user = useSelector((state) => state.user);
 
 	const [state, setState] = useState({
-		babies: user
-			? user.babies
-			: [
-					{
-						name: "Мальчик",
-						gender: "m",
-						id: "genericBoy",
-						weigths: [],
-					},
-					{
-						name: "Девочка",
-						gender: "f",
-						id: "genericGirl",
-						weigths: [],
-					},
-			  ],
+		babies: user ? user.babies : genericBabies,
 		selectedBabyId: null,
-		selectedBabyWeigths: [],
+		selectedBabyweights: [],
 	});
 
 	const classesAddButton = useStylesAddButton();
@@ -93,18 +79,18 @@ const WeigthCalc = () => {
 			label: classesCalcButton.label,
 			disabled: classesCalcButton.disabled,
 		},
-		disabled: state.selectedBabyWeigths.length > 1 ? false : true,
+		disabled: state.selectedBabyweights.length > 1 ? false : true,
 	};
 
-	const addWeigthEntry = () => {
+	const addweightEntry = () => {
 		setState((prev) => {
 			return {
 				...prev,
-				selectedBabyWeigths: [
-					...prev.selectedBabyWeigths,
+				selectedBabyweights: [
+					...prev.selectedBabyweights,
 					{
 						date: "",
-						weigth: "",
+						weight: "",
 						id: uniqid(),
 					},
 				],
@@ -112,55 +98,15 @@ const WeigthCalc = () => {
 		});
 	};
 
-	const deleteWeigthEntry = (e) => {
+	const deleteweightEntry = (e) => {
 		e.preventDefault();
 		e.persist();
 		setState((prev) => {
 			return {
 				...prev,
-				selectedBabyWeigths: prev.selectedBabyWeigths.filter((weigth) => weigth.id !== e.target.id),
+				selectedBabyweights: prev.selectedBabyweights.filter((weight) => weight.id !== e.target.id),
 			};
 		});
-
-		{
-			// let newBaby = user.babies.find(baby => baby.id === babyId)
-			// console.log(newBaby)
-			// newBaby = {
-			//     ...newBaby,
-			//     weigths: user.babies.find(baby => baby.id === babyId).weigths.filter(item => item.id !== weigth.id)
-			// }
-			// console.log(newBaby)
-			// const newUser = {
-			//     ...user,
-			//     babies: [
-			//         ...user.babies.filter(baby => baby.id !== babyId),
-			//         newBaby
-			//     ]
-			// }
-			// console.log(newUser)
-			// const response = await fetch('/deleteWeigth', {
-			//     method: 'DELETE',
-			//     headers: {
-			//       'Accept': 'application/json',
-			//       'Content-Type': 'application/json'
-			//     },
-			//     body: JSON.stringify({userId: userId, babyId: babyId, weigth: weigth})
-			// })
-			// if(response.status !== 200) {
-			//     console.log(response.error)
-			//     return
-			// }
-			// const newUser = await response.json()
-			// console.log(newUser)
-			// setUserCookie('mybaby-user', newUser)
-			// dispatch(userLogin(newUser))
-		}
-	};
-
-	const repaintBordersOnBabiesLI = () => {
-		// document.querySelectorAll(".weigth-calc .babies .baby-li").forEach((item) => (item.style.border = ""));
-		// if (document.querySelector(`.weigth-calc .babies .baby-li#${state.selectedBabyId}`))
-		// 	document.querySelector(`.weigth-calc .babies .baby-li#${state.selectedBabyId}`).style.border = "3px solid green";
 	};
 
 	const loadParams = (e) => {
@@ -169,35 +115,25 @@ const WeigthCalc = () => {
 			return {
 				...prev,
 				selectedBabyId: babyLIId,
-				selectedBabyWeigths: prev.babies.find((baby) => baby.id === babyLIId).weigths,
+				selectedBabyweights: prev.babies.find((baby) => baby.id === babyLIId).weights.sort(sortByDate),
 			};
 		});
 	};
 
-	const calculateAndSave = () => {
-		// let result = [
-		// 	...state.selectedBabyWeigths,
-		// 	{
-		// 		date: "2020-01-01",
-		// 		weigth: 4000,
-		// 	},
-		// 	{
-		// 		date: "2020-02-01",
-		// 		weigth: 4500,
-		// 	},
-		// 	{
-		// 		date: "2020-03-01",
-		// 		weigth: 5000,
-		// 	},
-		// 	{
-		// 		date: "2020-04-01",
-		// 		weigth: 5500,
-		// 	},
-		// ];
+	const calculateAndSaveWeights = async () => {
+		const enrichedWeights = enrichWeights(state.selectedBabyweights);
+		saveToDB(enrichedWeights);
+
+		setState((prev) => {
+			return {
+				...prev,
+				selectedBabyweights: enrichedWeights,
+			};
+		});
 	};
 
 	return (
-		<div className="weigth-calc">
+		<div className="weight-calc">
 			<div className="desc">
 				<h2>Калькулятор веса</h2>
 				<p>
@@ -238,16 +174,16 @@ const WeigthCalc = () => {
 					<div className="label">Норма, г</div>
 					<div>&nbsp;</div>
 				</div>
-				<WeigthList weigths={state.selectedBabyWeigths} deleteWeigth={deleteWeigthEntry} />
+				<WeightList weights={state.selectedBabyweights} deleteweight={deleteweightEntry} />
 			</div>
 			<div className="buttons">
 				<div>
-					<Button {...addButtonProps} onClick={addWeigthEntry}>
+					<Button {...addButtonProps} onClick={addweightEntry}>
 						Добавить дату и вес
 					</Button>
 				</div>
 				<div>
-					<Button {...calcButtonProps} onClick={calculateAndSave}>
+					<Button {...calcButtonProps} onClick={calculateAndSaveWeights}>
 						Рассчитать и сохранить
 					</Button>
 				</div>
@@ -256,4 +192,19 @@ const WeigthCalc = () => {
 	);
 };
 
-export default WeigthCalc;
+export default WeightCalc;
+
+const genericBabies = [
+	{
+		name: "Мальчик",
+		gender: "m",
+		id: "genericBoy",
+		weights: [],
+	},
+	{
+		name: "Девочка",
+		gender: "f",
+		id: "genericGirl",
+		weights: [],
+	},
+];

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import WeigthDelete from "../WeigthDelete";
+import WeightDelete from "../WeightDelete";
 import "./style.scss";
 
-const WeigthLI = ({ weigth, isEditable = true, deleteWeigth }) => {
-	const [date, setDate] = useState(weigth.date || "");
-	const [value, setValue] = useState(weigth.weigth || "");
+const WeightLI = ({ weight, isEditable = true, deleteweight }) => {
+	const [date, setDate] = useState(new Date(weight.date).toLocaleDateString("en-CA") || "");
+	const [value, setValue] = useState(weight.weight || "");
 
 	const handleDateChange = (e) => {
 		setDate(e.target.value);
@@ -15,19 +15,19 @@ const WeigthLI = ({ weigth, isEditable = true, deleteWeigth }) => {
 	};
 
 	return (
-		<div className="weigth-li">
+		<div className="weight-li">
 			<div className="date">
 				<input type="date" value={date} onChange={handleDateChange} />
 			</div>
-			<div className="weigth">
+			<div className="weight">
 				<input type="text" value={value} onChange={handleValueChange} />
 			</div>
 			<div className="normal">
 				<font>&nbsp;</font>
 			</div>
-			{isEditable ? <WeigthDelete weigth={weigth} deleteWeigth={deleteWeigth} /> : []}
+			{isEditable ? <WeightDelete weight={weight} deleteweight={deleteweight} /> : []}
 		</div>
 	);
 };
 
-export default WeigthLI;
+export default WeightLI;

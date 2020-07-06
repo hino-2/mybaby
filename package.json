@@ -17,6 +17,7 @@
     "react-scripts": "3.4.1",
     "react-transition-group": "^4.3.0",
     "redux": "^4.0.5",
+    "typescript": "^3.9.6",
     "uniqid": "^5.2.0",
     "universal-cookie": "^4.0.3"
   },

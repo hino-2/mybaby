@@ -1,144 +1,145 @@
-import React, { useState } from 'react'
-import Button              from '@material-ui/core/Button'
-import { makeStyles }      from '@material-ui/core/styles'
-import { Image, 
-         Transformation }  from 'cloudinary-react'
-import { setUserCookie }   from '../../utils'
-import { bigButton }       from '../../utils/buttonStyles'
-import { userLogin }       from '../../actions'
-import { useDispatch }     from 'react-redux'
-import uniqid              from 'uniqid'
-import './style.scss'
+import React, { useState } from "react";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import { Image, Transformation } from "cloudinary-react";
+import { setUserCookie } from "../../utils";
+import { bigButton } from "../../utils/buttonStyles";
+import { userLogin } from "../../actions";
+import { useDispatch } from "react-redux";
+import uniqid from "uniqid";
+import "./style.scss";
 
 const addNewBabyButtonStyle = {
-    ...bigButton,
-    root: {
-        ...bigButton.root,
-        '&:hover': {
-            ...bigButton['&.hover'],
-            background: '#017301'
-        },
-        background: 'forestgreen',
-        height: 40,
-        width: '100%',
-        border: 'none',
-    },
-    label: {
-        ...bigButton.label,
-        textTransform: 'none',
-    },
-}
-const useStyles = makeStyles(addNewBabyButtonStyle)
+	...bigButton,
+	root: {
+		...bigButton.root,
+		"&:hover": {
+			...bigButton["&.hover"],
+			background: "#017301",
+		},
+		background: "forestgreen",
+		height: 40,
+		width: "100%",
+		border: "none",
+	},
+	label: {
+		...bigButton.label,
+		textTransform: "none",
+	},
+};
+const useStyles = makeStyles(addNewBabyButtonStyle);
 
 const BabyAdd = ({ userId }) => {
-    const classes  = useStyles()
-    const today    = new Date().toLocaleDateString('en-CA')
-    const dispatch = useDispatch()
+	const classes = useStyles();
+	const today = new Date().toLocaleDateString("en-CA");
+	const dispatch = useDispatch();
 
-    const [nowJeSuis, setNowJeSuis] = useState('leButton')
-    const [gender, setGender]       = useState('m')
+	const [nowJeSuis, setNowJeSuis] = useState("leButton");
+	const [gender, setGender] = useState("m");
 
-    const toggleBabyGender = () => {
-        const babyGenderCheckbox = document.querySelector('#baby-gender')
-        const babyAddDiv         = document.querySelector('.baby-add')
-        if(babyGenderCheckbox.checked) {
-            babyAddDiv.style.background = 'hotpink'
-            setGender('f')
-        } else {
-            babyAddDiv.style.background = 'dodgerblue'
-            setGender('m')
-        }
-    }
+	const toggleBabyGender = () => {
+		const babyGenderCheckbox = document.querySelector("#baby-gender");
+		const babyAddDiv = document.querySelector(".baby-add");
+		if (babyGenderCheckbox.checked) {
+			babyAddDiv.style.background = "hotpink";
+			setGender("f");
+		} else {
+			babyAddDiv.style.background = "dodgerblue";
+			setGender("m");
+		}
+	};
 
-    const submitNewBaby = async () => {
-        const babyName   = document.querySelector('#baby-name').value
-        const babyGender = document.querySelector('#baby-gender').checked ? 'f' : 'm'
-        const babyDOB    = document.querySelector('#baby-dob').value
-    
-        if(!babyName || !babyDOB) return
+	const submitNewBaby = async () => {
+		const babyName = document.querySelector("#baby-name").value;
+		const babyGender = document.querySelector("#baby-gender").checked ? "f" : "m";
+		const babyDOB = document.querySelector("#baby-dob").value;
 
-        const newBaby = {
-            id: uniqid(),
-            name: babyName,
-            gender: babyGender,
-            dob: babyDOB,
-            weigths: []
-        }
+		if (!babyName || !babyDOB) return;
 
-        const response = await fetch('/newBaby', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id: userId, newBaby: newBaby})
-        })
+		const newBaby = {
+			id: uniqid(),
+			name: babyName,
+			gender: babyGender,
+			dob: babyDOB,
+			weights: [],
+		};
 
-        if(response.status !== 200) {
-            console.log(response.error)
-            return
-        }
+		const response = await fetch("/newBaby", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ id: userId, newBaby: newBaby }),
+		});
 
-        const newUser = await response.json()
+		if (response.status !== 200) {
+			console.log(response.error);
+			return;
+		}
 
-        setUserCookie('mybaby-user', newUser)
-        dispatch(userLogin(newUser))
+		const newUser = await response.json();
 
-        setNowJeSuis('leButton')
-    }
+		setUserCookie("mybaby-user", newUser);
+		dispatch(userLogin(newUser));
 
-    if(nowJeSuis === 'leButton')
-        return (
-            <div style={{width: "100%", marginTop: "2px"}}>
-                <Button classes={{
-                        root: classes.root,
-                        label: classes.label,
-                    }} onClick={() => setNowJeSuis('leForm')}>
-                        Добавить утенка
-                </Button>
-            </div>
-        )
+		setNowJeSuis("leButton");
+	};
 
-    return (
-        <div className="baby-add">
-            <div style={{display: "inline-block"}}>
-                <Image cloudName="hino-2" publicId="v1/mybaby/duck.png" title="Утенок">
-                    <Transformation height="20" width="20" quality="auto:good" crop="fit" />
-                </Image>
-            </div>
-            <div className="name">
-                <input type="text" id="baby-name" placeholder="Имя утенка" />
-            </div>
-            <div>
-                <input type="checkbox" 
-                       id="baby-gender" 
-                       onChange={toggleBabyGender} 
-                       style={{display: "none"}} 
-                       checked={gender !== 'm'}/>
-                <label htmlFor="baby-gender" style={{cursor: "pointer", textDecoration: "underline"}}>
-                    {gender === 'm' ? "мальчик" : "девочка"}
-                </label>
-            </div>
-            <div className="date">
-                <input type="date" id="baby-dob" defaultValue={today} />
-            </div>
-            <div style={{cursor: "pointer"}}>
-                <Image cloudName="hino-2" 
-                       publicId="v1/mybaby/close.png" 
-                       onClick={() => setNowJeSuis('leButton')} 
-                       title="Отмена">
-                    <Transformation height="20" width="20" quality="auto:good" crop="fit" />
-                </Image>
-                &nbsp;
-                <Image cloudName="hino-2" 
-                       publicId="v1/mybaby/submit3.png" 
-                       onClick={submitNewBaby}
-                       title="Добавить">
-                    <Transformation height="20" width="20" quality="auto:good" crop="fit" />
-                </Image>
-            </div>
-        </div>
-    )
-}
+	if (nowJeSuis === "leButton")
+		return (
+			<div style={{ width: "100%", marginTop: "2px" }}>
+				<Button
+					classes={{
+						root: classes.root,
+						label: classes.label,
+					}}
+					onClick={() => setNowJeSuis("leForm")}>
+					Добавить утенка
+				</Button>
+			</div>
+		);
 
-export default BabyAdd
+	return (
+		<div className="baby-add">
+			<div style={{ display: "inline-block" }}>
+				<Image cloudName="hino-2" publicId="v1/mybaby/duck.png" title="Утенок">
+					<Transformation height="20" width="20" quality="auto:good" crop="fit" />
+				</Image>
+			</div>
+			<div className="name">
+				<input type="text" id="baby-name" placeholder="Имя утенка" />
+			</div>
+			<div>
+				<input
+					type="checkbox"
+					id="baby-gender"
+					onChange={toggleBabyGender}
+					style={{ display: "none" }}
+					checked={gender !== "m"}
+				/>
+				<label htmlFor="baby-gender" style={{ cursor: "pointer", textDecoration: "underline" }}>
+					{gender === "m" ? "мальчик" : "девочка"}
+				</label>
+			</div>
+			<div className="date">
+				<input type="date" id="baby-dob" defaultValue={today} />
+			</div>
+			<div style={{ cursor: "pointer" }}>
+				<Image
+					cloudName="hino-2"
+					publicId="v1/mybaby/close.png"
+					onClick={() => setNowJeSuis("leButton")}
+					title="Отмена">
+					<Transformation height="20" width="20" quality="auto:good" crop="fit" />
+				</Image>
+				&nbsp;
+				<Image cloudName="hino-2" publicId="v1/mybaby/submit3.png" onClick={submitNewBaby} title="Добавить">
+					<Transformation height="20" width="20" quality="auto:good" crop="fit" />
+				</Image>
+			</div>
+		</div>
+	);
+};
+
+export default BabyAdd;

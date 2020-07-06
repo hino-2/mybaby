@@ -7,16 +7,13 @@ import Register from "../Register";
 import Login from "../Login";
 import Logout from "../Logout";
 import LK from "../LK";
-import WeigthCalc from "../WeigthCalc";
+import WeightCalc from "../WeightCalc";
 import "./style.scss";
 
 const Container = ({ location }) => (
 	<div className="container">
 		<TransitionGroup className="transition-group">
-			<CSSTransition
-				key={location.key}
-				timeout={{ enter: 300, exit: 300 }}
-				classNames="fade">
+			<CSSTransition key={location.key} timeout={{ enter: 300, exit: 300 }} classNames="fade">
 				<section className="route-section">
 					<Switch location={location}>
 						<Route path="/" exact component={HomePage} />
@@ -25,7 +22,7 @@ const Container = ({ location }) => (
 						<Route path="/login" component={Login} />
 						<Route path="/logout" component={Logout} />
 						<Route path="/lk" component={LK} />
-						<Route path="/weigthCalc" component={WeigthCalc} />
+						<Route path="/weightCalc" component={WeightCalc} />
 					</Switch>
 				</section>
 			</CSSTransition>

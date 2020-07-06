@@ -1,14 +1,6 @@
-import React from 'react'
-import './style.scss'
+import React from "react";
+import "./style.scss";
 
-const Baby = ({ match }) => {
+const Baby = ({ match }) => <div>{match.params.name}</div>;
 
-
-    return (
-        <div>
-            { match.params.name }
-        </div>
-    )
-}
-
-export default Baby
+export default Baby;
